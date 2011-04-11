@@ -1,0 +1,183 @@
+* Transformer Library *
+
+* Check record of loans *
+
+Description
+===========
+The user retrieves a list of their current loans.
+
+Preconditions
+=============
+The user is logged in.
+
+Basic Flow
+==========
+1 - User clicks 'View Loans' button.
+2 - Sees a list of current loans.
+
+Alternative Flows
+=================
+User has no current loans.
+2.1 - Display message "you have no current loans".
+
+Postconditions
+==============
+
+
+* Log in *
+
+Description
+===========
+A user logs in to the system.
+
+Preconditions
+=============
+User is NOT logged in.
+
+Basic Flow
+==========
+1. User enters username and password.
+2. User presses 'log in' button.
+3. System logs in the user with matching username and password.
+
+Alternative Flows
+=================
+Incorrect username or password.
+3.1 - Show error message.
+
+Postconditions
+==============
+User is logged in.
+
+
+* Loan *
+
+Description
+===========
+User makes a loan.
+
+Preconditions
+=============
+User is logged in.
+User has chosen a book to check out.
+
+Basic Flow
+==========
+1. User enters media ID.
+2. System makes sure media is available.
+3. System adds media to user's loans.
+4. System sets return date of media.
+5. System sets current loaner of media to user.
+
+Alternative Flows
+=================
+Media not avaiable.
+2.1 - Show 'not available' message.
+
+Postconditions
+==============
+Media's loaning status (returnDate and user) has been changed.
+Media has been added to user's loans.
+
+
+* Search media *
+
+Description
+===========
+The user enters something to search for and clicks the search button. A result
+matching user's search is displayed.
+
+Preconditions
+=============
+
+Basic Flow
+==========
+1. User enters a string to be searched for.
+2. User clicks 'search'.
+3. Search result is displayed.
+
+
+Alternative Flows
+=================
+No result.
+3.1 - Error message 'nothing found' is displayed.
+
+Postconditions
+==============
+(User knows ID of media to borrow).
+
+
+* Return loaned media *
+
+Description
+===========
+Return something borrowed.
+
+Preconditions
+=============
+User has ID of media to be returned.
+
+Basic Flow
+==========
+1. User enters ID of media to be returned.
+2. System locates media using ID.
+3. System removes media from user's loans.
+4. System sets return date of media to null.
+5. System sets current loaner of media to null.
+
+Alternative Flows
+=================
+Media ID not found.
+2.1 - Display message "Invalid ID, make sure you did not make a typo!".
+
+Media has no user.
+3.1 - Display message "media is already available".
+
+Postconditions
+==============
+Media's loaning status (returnDate and user) has been changed.
+Media has been removed from user's loans.
+
+
+* Show list of media *
+
+Description
+===========
+Shows a list of media.
+
+Preconditions
+=============
+There is a list of media to be shown.
+
+Basic Flow
+==========
+1. List media.
+
+Alternative Flows
+=================
+
+Postconditions
+==============
+
+
+* Check availability *
+
+Description
+===========
+Displays availability information about a media.
+
+Preconditions
+=============
+There is a media.
+
+Basic Flow
+==========
+1. Show that it is available.
+
+Alternative Flows
+=================
+Media is not available.
+1.2 - Show return date of media.
+
+Postconditions
+==============
