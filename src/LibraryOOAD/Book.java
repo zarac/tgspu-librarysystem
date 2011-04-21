@@ -12,7 +12,6 @@ package LibraryOOAD;
 public class Book extends Media {
     private String type;
     private String author;
-    private String name;
     private String published;
     private String result;
     

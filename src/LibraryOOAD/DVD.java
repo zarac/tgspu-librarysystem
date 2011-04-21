@@ -11,7 +11,6 @@ package LibraryOOAD;
  */
 public class DVD extends Media {
     private String type;
-    private String name;
     private String published;
     private String[] actors;
     private String result;

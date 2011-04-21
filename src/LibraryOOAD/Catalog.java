@@ -5,8 +5,14 @@
 
 package LibraryOOAD;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import aVLTree.AVLTree;
 
 /**
  *
@@ -14,21 +20,40 @@ import java.util.*;
  */
 public class Catalog {
 
-    private ArrayList<User> userArrayList = new ArrayList<User>();
+    protected ArrayList<User> userArrayList = new ArrayList<User>();
     protected User curUser;
-    //private AVLTree<Media> byID = new AVLTree<Media>();
-    //private AVLTree<Media> byName = new AVLTree<Media>();
+    protected AVLTree<Media> byID;
+    protected AVLTree<Media> byName;
 
     public Catalog(){
         this.curUser = null;
         this.userArrayList.add(new User("admin", "admin", "none"));
+        byID = new AVLTree<Media>();
+        byName = new AVLTree<Media>();
         importUsers();
         importMedia();
     }
 
-    public String search(String search){
-        
-        return "test";
+    /**
+     * Does an exact search.
+     * 
+     * @param key What to search for.
+     * @return A string representation of the result.
+     */
+    public String search(String key){
+        String result = "You've searched for '" + key + "'.";
+
+        // by ID
+        Media mediaByID = byID.find(key);
+        if (mediaByID != null)
+            result += "\n\nFound by ID: " + mediaByID.toString();
+
+        // by Name
+        Media mediaByName = byName.find(key);
+        if (mediaByName != null)
+            result += "\n\nFound by Name: " + mediaByName.toString();
+
+        return result;
     }
     
     public void importUsers(){
@@ -80,7 +105,9 @@ public class Catalog {
     }
 
     public void addMedia(Media media){
-        
+        System.out.println("addMedia(" + media.toString() + ")");
+        byID.add(media.getId(), media);
+        byName.add(media.getName(), media);
     }
 
     public static void main(String[] args) {
