@@ -7,8 +7,6 @@ package LibraryOOAD;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -21,8 +19,10 @@ public class GUI extends JFrame implements ActionListener{
     private JLabel lLogIn = new JLabel("Please log in", (int) CENTER_ALIGNMENT);
     private JFrame fLogIn = new JFrame();
     private JButton bLogIn = new JButton("Log in");
-    private JTextField name = new JTextField("Your name");
-    private JTextField persNr = new JTextField("Your Social Security Number");
+    private JTextField name = new JTextField("admin");
+    private JTextField persNr = new JTextField("admin");
+    //private JTextField name = new JTextField("Your name");
+    //private JTextField persNr = new JTextField("Your Social Security Number");
     private Catalog catalog;
 
     //library window, when logged in
