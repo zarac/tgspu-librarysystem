@@ -45,9 +45,12 @@ public class GUI extends JFrame implements ActionListener{
     private JPanel panelViewLoans = new JPanel();
     private JPanel panelNewLoan = new JPanel();
     private JPanel panelReturnMedia = new JPanel();
+    protected WelcomePanel panelWelcome;
 
     public GUI(Catalog catalog){
         this.catalog = catalog;
+
+        panelWelcome = new WelcomePanel();
 
         // settings for login panel data
         fLogIn.setTitle("HackerLibary - Log in - v3.0");
@@ -121,51 +124,146 @@ public class GUI extends JFrame implements ActionListener{
         panelSearch.add(BorderLayout.CENTER, scroll);
         panelSearch.add(BorderLayout.NORTH, searchBar);
         bSearch.addActionListener(this);
-        // view loans panel
-//        panelViewLoans.add(null);
-        // new loan panel
-//        panelNewLoan.add(null);
-        // return media panel
-//        panelReturnMedia.add(null);
+
+        // default view
+        setView(panelWelcome);
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == bLogIn){
-            if( catalog.logIn(name.getText(), persNr.getText()) ){
-            this.setVisible(true);
-            fLogIn.setVisible(false);
-        }else if(name.getText().equals("din mamma")){
-            lLogIn.setText("ERROR! NUKE HAS BEEN SENT TO YOUR MOMS LOCATION!");
-        }else{
-            lLogIn.setText("ERROR! NUKE SENT TO YOUR LOCATION!");
+        if (e.getSource() == bLogIn) {
+            if (catalog.logIn(name.getText(), persNr.getText())) {
+                this.setVisible(true);
+                fLogIn.setVisible(false);
+            } else if (name.getText().equals("din mamma")) {
+                lLogIn.setText("ERROR! NUKE HAS BEEN SENT TO YOUR MOMS LOCATION!");
+            } else {
+                lLogIn.setText("ERROR! NUKE SENT TO YOUR LOCATION!");
             }
-        }else if(e.getSource() == search){
+        } else if (e.getSource() == search) {
             setView(panelSearch);
-        }else if(e.getSource() == viewLoans){
+        } else if (e.getSource() == viewLoans) {
             setView(null);
-        }else if(e.getSource() == newLoan){
+        } else if (e.getSource() == newLoan) {
             setView(null);
-        }else if(e.getSource() == returnMedia){
+        } else if (e.getSource() == returnMedia) {
             setView(null);
-        }else if(e.getSource() == logOut){
+        } else if (e.getSource() == logOut) {
             catalog.curUser = null;
             this.setVisible(false);
             fLogIn.setVisible(true);
-        }else if(e.getSource() == bSearch){
+        } else if (e.getSource() == bSearch) {
             doSearch();
         }
     }
 
     public void setView(JPanel panel){
-        panel.setBackground(Color.BLACK);
-        panel.setForeground(Color.GREEN);
         view.removeAll();
-        view.add(panel);
+
+        if (panel == null)
+            view.add(panelWelcome);
+        else
+            view.add(panel);
+
         view.revalidate();
+        view.repaint();
     }
 
     public void doSearch(){
         searchResultPanel.setText(catalog.search(searchInput.getText()));
         scroll.revalidate();
+    }
+
+    // TODO : continuously update
+    protected class WelcomePanel extends JPanel
+    {
+        protected int width, height;
+        protected Graphics g;
+        protected Font font;
+        protected int currentColor;
+        protected Color[] colors;
+
+        protected WelcomePanel()
+        {
+            setBackground(Color.BLACK);
+            setForeground(Color.GREEN);
+            font = new Font("monospaced", Font.PLAIN, 12);
+
+            // some nice green colors
+            colors = new Color[]
+            {
+                new Color(50, 255, 50),
+                new Color(60, 255, 60),
+                new Color(70, 255, 70),
+                new Color(80, 255, 80),
+                new Color(90, 255, 90),
+                new Color(100, 255, 100),
+                new Color(110, 255, 110),
+                new Color(120, 255, 120),
+                new Color(130, 255, 130),
+                new Color(140, 255, 140),
+                new Color(150, 255, 150),
+                new Color(160, 255, 160),
+                new Color(170, 255, 170),
+                new Color(180, 255, 180),
+                new Color(190, 255, 190),
+                new Color(200, 255, 200),
+                new Color(210, 255, 210),
+            };
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see JComponent#paintComponent(Graphics)
+         */
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            this.g = g;
+            width = getWidth();
+            height = getHeight();
+
+            nextColor();
+            drawWelcomeText();
+        }
+
+        protected Color nextColor()
+        {
+            if (++currentColor >= colors.length)
+                currentColor = 0;
+            return colors[currentColor];
+        }
+
+        protected void drawWelcomeText()
+        {
+            g.setFont(font);
+
+            g.setColor(nextColor());
+            g.drawString("Welcome", 20, 20);
+            g.setColor(nextColor());
+            g.drawString(" elcome", 20, 30);
+            g.setColor(nextColor());
+            g.drawString("  lcome", 20, 40);
+            g.setColor(nextColor());
+            g.drawString("   come", 20, 50);
+            g.setColor(nextColor());
+            g.drawString("    ome", 20, 60);
+            g.setColor(nextColor());
+            g.drawString("     me", 20, 70);
+            g.setColor(nextColor());
+            g.drawString("      e", 20, 80);
+
+            g.setColor(nextColor());
+            g.drawString("* Awesome Terminator Matrix Library System *", 20, 190);
+            g.setColor(nextColor());
+            g.drawString("Created by...", 20, 205);
+            g.setColor(nextColor());
+            g.drawString("- Daniel Aladics", 20, 220);
+            g.setColor(nextColor());
+            g.drawString("- Hannes Landstedt", 20, 230);
+            g.setColor(nextColor());
+            g.drawString("- Magnus Grönvall", 20, 240);
+            g.setColor(nextColor());
+            g.drawString("- Jens Persson", 20, 250);
+        }
     }
 }
