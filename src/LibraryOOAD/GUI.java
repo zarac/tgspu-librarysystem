@@ -11,6 +11,8 @@ import java.awt.Dimension;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -29,7 +31,7 @@ import javax.swing.Timer;
  *
  * @author Spellabbet
  */
-public class GUI extends JFrame implements ActionListener{
+public class GUI extends JFrame implements ActionListener, KeyListener {
     //Log in
     private JPanel pLogIn = new JPanel(new GridLayout(4, 1));
     private JLabel lLogIn = new JLabel("Please log in", (int) CENTER_ALIGNMENT);
@@ -135,6 +137,7 @@ public class GUI extends JFrame implements ActionListener{
         searchBar.setBackground(Color.BLACK);
         searchResultPanel.setForeground(Color.GREEN);
         searchResultPanel.setBackground(Color.BLACK);
+        searchInput.addKeyListener(this);
         searchBar.add(searchInput);
         searchBar.add(bSearch);
         panelSearch.add(BorderLayout.CENTER, scroll);
@@ -168,7 +171,7 @@ public class GUI extends JFrame implements ActionListener{
             this.setVisible(false);
             fLogIn.setVisible(true);
         } else if (e.getSource() == bSearch) {
-            doSearch();
+            search();
         }
     }
 
@@ -184,9 +187,34 @@ public class GUI extends JFrame implements ActionListener{
         view.repaint();
     }
 
-    public void doSearch(){
+    public void search(){
         searchResultPanel.setText(catalog.search(searchInput.getText()));
         scroll.revalidate();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KeyListener#keyTyped(KeyEvent)
+     */
+    public void keyTyped(KeyEvent e)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KeyListener#keyPressed(KeyEvent)
+     */
+    public void keyPressed(KeyEvent e)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see KeyListener#keyReleased(KeyEvent)
+     */
+    public void keyReleased(KeyEvent e)
+    {
+        search();
     }
 
     protected class WelcomePanel extends JPanel implements ActionListener
