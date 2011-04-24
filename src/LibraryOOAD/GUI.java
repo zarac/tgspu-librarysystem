@@ -5,9 +5,25 @@
 
 package LibraryOOAD;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.Timer;
 
 /**
  *
@@ -173,14 +189,14 @@ public class GUI extends JFrame implements ActionListener{
         scroll.revalidate();
     }
 
-    // TODO : continuously update
-    protected class WelcomePanel extends JPanel
+    protected class WelcomePanel extends JPanel implements ActionListener
     {
         protected int width, height;
         protected Graphics g;
         protected Font font;
-        protected int currentColor;
+        protected int currentColor, initialColor;
         protected Color[] colors;
+        protected Timer matrixEffect;
 
         protected WelcomePanel()
         {
@@ -209,6 +225,11 @@ public class GUI extends JFrame implements ActionListener{
                 new Color(200, 255, 200),
                 new Color(210, 255, 210),
             };
+
+            matrixEffect = new Timer(1000/18, this);
+
+            // TODO : ? Start and stop when appropriate.
+            matrixEffect.start();
         }
 
         /**
@@ -233,11 +254,19 @@ public class GUI extends JFrame implements ActionListener{
             return colors[currentColor];
         }
 
+        protected Color nextInitialColor()
+        {
+            if (--initialColor < 0)
+                initialColor=colors.length-1;
+            currentColor = initialColor;
+            return colors[currentColor];
+        }
+
         protected void drawWelcomeText()
         {
             g.setFont(font);
 
-            g.setColor(nextColor());
+            g.setColor(nextInitialColor());
             g.drawString("Welcome", 20, 20);
             g.setColor(nextColor());
             g.drawString(" elcome", 20, 30);
@@ -255,15 +284,24 @@ public class GUI extends JFrame implements ActionListener{
             g.setColor(nextColor());
             g.drawString("* Awesome Terminator Matrix Library System *", 20, 190);
             g.setColor(nextColor());
-            g.drawString("Created by...", 20, 205);
+            g.drawString("Created by:", 20, 205);
             g.setColor(nextColor());
-            g.drawString("- Daniel Aladics", 20, 220);
+            g.drawString(" - Daniel Aladics", 20, 220);
             g.setColor(nextColor());
-            g.drawString("- Hannes Landstedt", 20, 230);
+            g.drawString(" - Hannes Landstedt", 20, 230);
             g.setColor(nextColor());
-            g.drawString("- Magnus Grönvall", 20, 240);
+            g.drawString(" - Jens Persson", 20, 250);
             g.setColor(nextColor());
-            g.drawString("- Jens Persson", 20, 250);
+            g.drawString(" - Magnus Grönvall", 20, 240);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            repaint();
         }
     }
 }
