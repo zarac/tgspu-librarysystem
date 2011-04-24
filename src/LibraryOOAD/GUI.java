@@ -153,6 +153,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
             if (catalog.logIn(name.getText(), persNr.getText())) {
                 this.setVisible(true);
                 fLogIn.setVisible(false);
+                setView(panelWelcome);
             } else if (name.getText().equals("din mamma")) {
                 lLogIn.setText("ERROR! NUKE HAS BEEN SENT TO YOUR MOMS LOCATION!");
             } else {
