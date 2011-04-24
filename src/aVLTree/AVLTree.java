@@ -1,6 +1,8 @@
 package aVLTree;
 
-public class AVLTree<Value> implements Dictionary<Value>
+import java.util.LinkedList;
+
+public class AVLTree<Value>
 {
     int size;
 
@@ -22,7 +24,15 @@ public class AVLTree<Value> implements Dictionary<Value>
             AVLTreeNode<Value> current = root;
             while (true)
             {
-                if (key.compareTo(current.key) <= 0)
+                // allow for duplicate entries
+                // TODO : Test how this effects the speed of adding.
+                int difference = key.compareTo(current.key);
+                if (difference == 0)
+                {
+                    current.values.add(value);
+                    break;
+                }
+                else if (difference < 0)
                 {
                     if (current.left == null)
                     {
@@ -35,7 +45,7 @@ public class AVLTree<Value> implements Dictionary<Value>
                     else
                         current = current.left;
                 }
-                else
+                else // difference > 0
                 {
                     if (current.right == null)
                     {
@@ -85,14 +95,14 @@ public class AVLTree<Value> implements Dictionary<Value>
      * {@inheritDoc}
      * @see Dictionary#remove(String)
      */
-    public Value remove(String key)
+    public LinkedList<Value> remove(String key)
     {
         AVLTreeNode<Value> node = removeNode(key);
 
         if (node == null)
             return null;
 
-        return node.value;
+        return node.values;
     }
 
     /**
@@ -257,13 +267,15 @@ public class AVLTree<Value> implements Dictionary<Value>
      * {@inheritDoc}
      * @see Dictionary#find(String)
      */
-    public Value find(String key)
+    public LinkedList<Value> find(String key)
     {
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)findNode(key);
         if (node == null)
             return null;
         else
-            return node.value;
+            return node.values;
+        // TODO : ? Return array rather than list. It's a shame you can't
+        // create generic arrays in Java.
     }
 
     /**

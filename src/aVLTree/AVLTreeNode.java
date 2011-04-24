@@ -1,9 +1,11 @@
 package aVLTree;
 
+import java.util.LinkedList;
+
 public class AVLTreeNode<Value>
 {
     public String key;
-    public Value value;
+    public LinkedList<Value> values;
     public int height = 1;
     public AVLTreeNode<Value> parent;
     public AVLTreeNode<Value> left;
@@ -12,7 +14,8 @@ public class AVLTreeNode<Value>
     public AVLTreeNode(String key, Value value)
     {
         this.key = key;
-        this.value = value;
+        values = new LinkedList<Value>();
+        values.add(value);
     }
 
     public String toString()
