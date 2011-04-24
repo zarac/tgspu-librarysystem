@@ -158,11 +158,11 @@ public class GUI extends JFrame implements ActionListener{
         } else if (e.getSource() == search) {
             setView(panelSearch);
         } else if (e.getSource() == viewLoans) {
-            setView(null);
+            setView(panelViewLoans);
         } else if (e.getSource() == newLoan) {
-            setView(null);
+            setView(panelNewLoan);
         } else if (e.getSource() == returnMedia) {
-            setView(null);
+            setView(panelReturnMedia);
         } else if (e.getSource() == logOut) {
             catalog.curUser = null;
             this.setVisible(false);
