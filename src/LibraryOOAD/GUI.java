@@ -165,17 +165,22 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
                 lLogIn.setText("ERROR! NUKE SENT TO YOUR LOCATION!");
             }
         } else if (e.getSource() == search) {
+            setSelected(search);
             setView(panelSearch);
         } else if (e.getSource() == viewLoans) {
+            setSelected(viewLoans);
             setView(new ViewLoansPanel());
         } else if (e.getSource() == newLoan) {
+            setSelected(newLoan);
             setView(panelNewLoan);
         } else if (e.getSource() == returnMedia) {
+            setSelected(returnMedia);
             setView(panelReturnMedia);
         } else if (e.getSource() == logOut) {
             catalog.curUser = null;
             this.setVisible(false);
             fLogIn.setVisible(true);
+            setSelected(null);
         } else if (e.getSource() == bSearch) {
             search();
         }
@@ -221,6 +226,43 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent e)
     {
         search();
+    }
+
+    protected void setSelected(JButton button)
+    {
+        if (search == button)
+            selected(search, true);
+        else
+            selected(search, false);
+
+        if (viewLoans == button)
+            selected(viewLoans, true);
+        else
+            selected(viewLoans, false);
+
+        if (newLoan == button)
+            selected(newLoan, true);
+        else
+            selected(newLoan, false);
+
+        if (returnMedia == button)
+            selected(returnMedia, true);
+        else
+            selected(returnMedia, false);
+    }
+
+    protected void selected(JButton button, boolean select)
+    {
+        if (select)
+        {
+            button.setBackground(Color.GREEN);
+            button.setForeground(Color.BLACK);
+        }
+        else
+        {
+            button.setBackground(Color.BLACK);
+            button.setForeground(Color.GREEN);
+        }
     }
 
     protected class WelcomePanel extends JPanel implements ActionListener
@@ -375,8 +417,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
             public void actionPerformed(ActionEvent e) {
                 boolean result = catalog.returnMedia(media);
                 if(result){
+                    setSelected(viewLoans);
                     setView(new ViewLoansPanel());
-            }
+                }
             }
         }
     }
@@ -403,6 +446,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
             boolean result = catalog.loanMedia(idField.getText());
             idField.setText("Failed.");
             if(result){
+                setSelected(viewLoans);
                 setView(new ViewLoansPanel());
                 idField.setText("Insert ID");
             }
@@ -431,10 +475,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
             boolean result = catalog.returnMedia(idField.getText());
             idField.setText("Failed.");
             if(result){
+                setSelected(viewLoans);
                 setView(new ViewLoansPanel());
                 idField.setText("Insert ID");
             }
         }
     }
-
 }
