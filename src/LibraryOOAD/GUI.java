@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -43,7 +44,8 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     private JFrame fLogIn = new JFrame();
     private JButton bLogIn = new JButton("Log in");
     private JTextField name = new JTextField("admin");
-    private JTextField persNr = new JTextField("admin");
+    //private JTextField persNr = new JTextField("admin");
+    private JPasswordField persNr = new JPasswordField("admin");
     //private JTextField name = new JTextField("Your name");
     //private JTextField persNr = new JTextField("Your Social Security Number");
     private Catalog catalog;
@@ -153,9 +155,20 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         setView(panelWelcome);
     }
 
+    protected String charArrayToString(char[] chars)
+    {
+        String returnValue = "";
+        for ( int i = 0; i < chars.length; ++i ) {
+            returnValue += chars[i];
+        }
+        return returnValue;
+    }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == bLogIn) {
-            if (catalog.logIn(name.getText(), persNr.getText())) {
+            //if (catalog.logIn(name.getText(), persNr.getText())) {
+            System.out.println('g' + "persNr" + persNr.getPassword().length);
+            if (catalog.logIn(name.getText(), charArrayToString(persNr.getPassword()))) {
                 this.setVisible(true);
                 fLogIn.setVisible(false);
                 setView(panelWelcome);
@@ -255,7 +268,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     {
         if (select)
         {
-            button.setBackground(Color.GREEN);
+            button.setBackground(new Color(80,240,14));
             button.setForeground(Color.BLACK);
         }
         else
