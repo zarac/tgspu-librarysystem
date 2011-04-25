@@ -24,7 +24,7 @@ public class Book extends Media {
     }
 
     public String toString(){
-        result = "Type: " + this.type + "\nID: " + this.getId() + "\nName: " + this.name + "\nAuthor: " + this.author + "\nPublished: " + this.published;
+        result = "Type: " + this.type + "\nID: " + this.getId() + "\nName: " + this.name + "\nAuthor: " + this.author + "\nPublished: " + this.published + "\nAvailable: " + super.available;
         return result;
     }
 }

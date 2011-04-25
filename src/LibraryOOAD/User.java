@@ -38,4 +38,7 @@ public class User {
     public void addLoan(Media media){
         loansArray.add(media);
     }
+    public ArrayList<Media> getLoans(){
+        return loansArray;
+    }
 }

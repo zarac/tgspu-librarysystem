@@ -5,6 +5,7 @@
 
 package LibraryOOAD;
 
+
 /**
  *
  * @author Spellabbet
@@ -25,13 +26,14 @@ public class DVD extends Media {
     }
 
     public String actorsToString(){
+        actorsString = "";
         for(int i = 0; i<actors.length ; i++){
             actorsString = actorsString + actors[i] + ", ";
         }
         return actorsString;
     }
     public String toString(){
-        result = "Type: " + this.type + "\nID: " + this.getId() + "\nName: " + this.name + "\nActors: " + actorsToString() + "\nPublished: " + this.published;
+        result = "Type: " + this.type + "\nID: " + this.getId() + "\nName: " + this.name + "\nActors: " + actorsToString() + "\nPublished: " + this.published + "\nAvailable: " + super.available;
         return result;
     }
 }

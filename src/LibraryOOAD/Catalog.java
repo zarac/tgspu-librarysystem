@@ -22,7 +22,7 @@ import aVLTree.AVLTree;
  */
 public class Catalog {
 
-    protected ArrayList<User> userArrayList = new ArrayList<User>();
+    protected AVLTree<User> users;
     protected User curUser;
     // TODO : index array, eek so much duplicate code!
     protected AVLTree<Media> byID;
@@ -33,12 +33,14 @@ public class Catalog {
 
     public Catalog(){
         this.curUser = null;
-        this.userArrayList.add(new User("admin", "admin", "none"));
+        users = new AVLTree<User>();
         byID = new AVLTree<Media>();
         byName = new AVLTree<Media>();
         byWild = new AVLTree<Media>();
         importUsers();
         importMedia();
+
+        this.users.add("admin", new User("admin", "admin", "none"));
     }
 
     /**
@@ -103,7 +105,7 @@ public class Catalog {
             person = br.readLine();
             while(person != null){
                 parts = person.split(";");
-                this.userArrayList.add(new User(parts[0], parts[1], parts[2]));
+                this.users.add(parts[0], new User(parts[0], parts[1], parts[2]));
                 person = br.readLine();
             }
         } catch (IOException e) {
@@ -153,19 +155,62 @@ public class Catalog {
             byWild.add(names[i].toLowerCase(), media);
         }
     }
-
-    public static void main(String[] args) {
-        Catalog catalog = new Catalog();
-        GUI gui = new GUI(catalog);
-    }
-
     public boolean logIn(String name, String persNr) {
-        for(int i = 0 ; i < userArrayList.size();i++) {
-            if((name.equals(userArrayList.get(i).getName())) && persNr.equals(userArrayList.get(i).getPersNr())){
-                curUser = userArrayList.get(i);
+        LinkedList<User> temp = users.find(name);
+        if(temp.size() > 0){
+            if( temp.getFirst().getPersNr().equals(persNr)){
+                curUser = temp.getFirst();
                 return true;
             }
         }
         return false;
     }
+    public boolean returnMedia(Media media){
+        if(media.getUser().equals(curUser)){
+            media.removeLoanfromUser();
+            media.setUser(null);
+            media.setAvailability(true);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean returnMedia(String id){
+        boolean result = false;
+        LinkedList<Media> medias = byID.find(id);
+        if(medias.size() == 0){
+            return false;
+        } else {
+            Media media = medias.getFirst();
+            if(media != null && !media.available){
+                result = returnMedia(media);
+            }
+        }
+        return result;
+    }
+
+    public void loanMedia(Media media){
+        media.setUser(curUser);
+        media.setAvailability(false);
+        curUser.addLoan(media);
+    }
+        
+    public boolean loanMedia(String id){
+        LinkedList<Media> medias = byID.find(id);
+        if(medias.size() == 0){
+            return false;
+        } else {
+            Media media = medias.getFirst();
+            if(media != null && media.available){
+                loanMedia(media);
+                return true;
+            }
+        }
+        return false;
+    }
+
+        public static void main(String[] args) {
+        Catalog catalog = new Catalog();
+        GUI gui = new GUI(catalog);
+        }
 }

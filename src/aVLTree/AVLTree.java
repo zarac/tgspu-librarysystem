@@ -271,7 +271,7 @@ public class AVLTree<Value>
     {
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)findNode(key);
         if (node == null)
-            return null;
+            return new LinkedList<Value>();
         else
             return node.values;
         // TODO : ? Return array rather than list. It's a shame you can't

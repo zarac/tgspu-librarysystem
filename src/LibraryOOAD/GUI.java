@@ -8,6 +8,7 @@ package LibraryOOAD;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,11 +17,15 @@ import java.awt.event.KeyListener;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.TextField;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -60,9 +65,9 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     private JTextArea searchResultPanel = new JTextArea();
     private JScrollPane scroll = new JScrollPane(searchResultPanel);
 
-    private JPanel panelViewLoans = new JPanel();
-    private JPanel panelNewLoan = new JPanel();
-    private JPanel panelReturnMedia = new JPanel();
+    private ViewLoansPanel panelViewLoans;
+    private NewLoan panelNewLoan = new NewLoan();
+    private ReturnLoan panelReturnMedia = new ReturnLoan();
     protected WelcomePanel panelWelcome;
 
     public GUI(Catalog catalog){
@@ -143,7 +148,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         panelSearch.add(BorderLayout.CENTER, scroll);
         panelSearch.add(BorderLayout.NORTH, searchBar);
         bSearch.addActionListener(this);
-
+        
         // default view
         setView(panelWelcome);
     }
@@ -162,7 +167,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         } else if (e.getSource() == search) {
             setView(panelSearch);
         } else if (e.getSource() == viewLoans) {
-            setView(panelViewLoans);
+            setView(new ViewLoansPanel());
         } else if (e.getSource() == newLoan) {
             setView(panelNewLoan);
         } else if (e.getSource() == returnMedia) {
@@ -333,4 +338,103 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
             repaint();
         }
     }
+
+    protected class ViewLoansPanel extends JPanel
+    {
+        public ViewLoansPanel(){
+            
+            setBackground(Color.BLACK);
+            setForeground(Color.GREEN);
+            ArrayList<Media> loans = catalog.curUser.getLoans();
+            int size = loans.size();
+            setLayout(new GridLayout(size, 1));
+            for(int i = 0; i<size; i++){
+                add(new ViewRecord(loans.get(i)));
+            }
+
+        }
+
+        protected class ViewRecord extends JPanel implements ActionListener{
+            Media media;
+
+            public ViewRecord(Media mediaIn){
+                media = mediaIn;
+                setBackground(Color.BLACK);
+                setForeground(Color.GREEN);
+                setLayout(new GridLayout(1, 2));
+                JTextArea loans = new JTextArea(media.toString());
+                loans.setBackground(Color.BLACK);
+                loans.setForeground(Color.GREEN);
+                add(loans);
+                JButton returnButton = new JButton("Return");
+                returnButton.setBackground(Color.BLACK);
+                returnButton.setForeground(Color.GREEN);
+                returnButton.addActionListener(this);
+                add(returnButton);
+            }
+            public void actionPerformed(ActionEvent e) {
+                boolean result = catalog.returnMedia(media);
+                if(result){
+                    setView(new ViewLoansPanel());
+            }
+            }
+        }
+    }
+
+    protected class NewLoan extends JPanel implements ActionListener{
+        private JTextField idField = new JTextField("Insert ID");
+        private JButton doLoan = new JButton("Loan");
+
+        public NewLoan(){
+            setForeground(Color.GREEN);
+            setBackground(Color.BLACK);
+            idField.setForeground(Color.GREEN);
+            idField.setBackground(Color.BLACK);
+            idField.setPreferredSize(new Dimension(100, 20));
+            doLoan.setForeground(Color.GREEN);
+            doLoan.setBackground(Color.BLACK);
+            setLayout(new FlowLayout());
+            doLoan.addActionListener(this);
+            add(idField);
+            add(doLoan);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            boolean result = catalog.loanMedia(idField.getText());
+            idField.setText("Failed.");
+            if(result){
+                setView(new ViewLoansPanel());
+                idField.setText("Insert ID");
+            }
+        }
+    }
+
+    protected class ReturnLoan extends JPanel implements ActionListener{
+        private JTextField idField = new JTextField("Insert ID");
+        private JButton doLoan = new JButton("Return");
+
+        public ReturnLoan(){
+            setForeground(Color.GREEN);
+            setBackground(Color.BLACK);
+            idField.setForeground(Color.GREEN);
+            idField.setBackground(Color.BLACK);
+            idField.setPreferredSize(new Dimension(100, 20));
+            doLoan.setForeground(Color.GREEN);
+            doLoan.setBackground(Color.BLACK);
+            setLayout(new FlowLayout());
+            doLoan.addActionListener(this);
+            add(idField);
+            add(doLoan);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            boolean result = catalog.returnMedia(idField.getText());
+            idField.setText("Failed.");
+            if(result){
+                setView(new ViewLoansPanel());
+                idField.setText("Insert ID");
+            }
+        }
+    }
+
 }
