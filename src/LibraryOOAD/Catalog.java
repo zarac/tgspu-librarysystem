@@ -111,7 +111,7 @@ public class Catalog {
             person = br.readLine();
             while(person != null){
                 parts = person.split(";");
-                this.users.add(parts[0], new User(parts[0], parts[1], parts[2]));
+                this.users.add(parts[1], new User(parts[0], parts[1], parts[2]));
                 person = br.readLine();
             }
         } catch (IOException e) {
@@ -197,7 +197,7 @@ public class Catalog {
      */
     public boolean returnMedia(Media media){
         if(media.getUser().equals(curUser)){
-            media.removeLoanfromUser();
+            media.getUser().removeLoan(media);
             media.setUser(null);
             media.setAvailability(true);
             return true;
