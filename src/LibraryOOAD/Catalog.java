@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,6 +16,7 @@ import java.util.LinkedList;
 import aVLTree.AVLTree;
 
 /**
+ * The catalog also known as the huge fucking awesome controller of the whole world. FUCK EYAH!
  *
  * @author Spellabbet
  */
@@ -31,6 +31,9 @@ public class Catalog {
     // Used to split title into parts for wild index
     protected String nameRegex = " ";
 
+    /**
+     * Creates a new catalog instance.
+     */
     public Catalog(){
         this.curUser = null;
         users = new AVLTree<User>();
@@ -92,7 +95,10 @@ public class Catalog {
 
         return result;
     }
-    
+    /**
+     * Imports all users from a filé.
+     *
+     */
     public void importUsers(){
         String person;
         String[] parts;
@@ -112,7 +118,11 @@ public class Catalog {
             System.out.println("File not found.");
         }
     }
-
+    
+    /**
+     * Imports all media from a filé.
+     *
+     */
     public void importMedia(){
         String media;
         String[] parts;
@@ -141,6 +151,11 @@ public class Catalog {
         }
     }
 
+    /**
+     * Adds the given media to 3 different AVLtrees.
+     *
+     * @param media The media to be added.
+     */
     public void addMedia(Media media){
         System.out.println("addMedia(" + media.toString() + ")");
         // by ID
@@ -155,6 +170,14 @@ public class Catalog {
             byWild.add(names[i].toLowerCase(), media);
         }
     }
+
+    /**
+     * Login of given user to the system.
+     *
+     * @param name Name to check.
+     * @param persNr Personal security number to check.
+     * @return If login was a success or not.
+     */
     public boolean logIn(String name, String persNr) {
         LinkedList<User> temp = users.find(name);
         if(temp.size() > 0){
@@ -165,6 +188,13 @@ public class Catalog {
         }
         return false;
     }
+
+    /**
+     * Returns media.
+     *
+     * @param media The media to be returned.
+     * @return If the return was a success or not.
+     */
     public boolean returnMedia(Media media){
         if(media.getUser().equals(curUser)){
             media.removeLoanfromUser();
@@ -174,7 +204,13 @@ public class Catalog {
         }
         return false;
     }
-    
+
+    /**
+     * Returns media.
+     * 
+     * @param id The id to find the media.
+     * @return If the return was a success or not.
+    */
     public boolean returnMedia(String id){
         boolean result = false;
         LinkedList<Media> medias = byID.find(id);
@@ -189,12 +225,24 @@ public class Catalog {
         return result;
     }
 
+    /**
+     * Loans a media.
+     *
+     * @param media The media to be loaned.
+     */
     public void loanMedia(Media media){
         media.setUser(curUser);
         media.setAvailability(false);
         curUser.addLoan(media);
     }
-        
+
+    
+    /**
+     * Loans a media.
+     *
+     * @param id The id of a media to be loaned.
+     * @return If the loan was a success or not.
+     */
     public boolean loanMedia(String id){
         LinkedList<Media> medias = byID.find(id);
         if(medias.size() == 0){
@@ -208,8 +256,21 @@ public class Catalog {
         }
         return false;
     }
+    /**
+     * Gets the current user logged in.
+     *
+     * @return The current user logged in.
+     */
+    public User getCurrentUser(){
+        return this.curUser;
+    }
 
-        public static void main(String[] args) {
+    /**
+     * Starts the system.
+     *
+     * @param args The argument.
+     */
+    public static void main(String[] args) {
         Catalog catalog = new Catalog();
         GUI gui = new GUI(catalog);
         }

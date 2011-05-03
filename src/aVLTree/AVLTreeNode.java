@@ -2,6 +2,12 @@ package aVLTree;
 
 import java.util.LinkedList;
 
+/**
+ * A node beloning to the AVLTree.
+ *
+ * @author Spellabbet
+ * @param <Value>
+ */
 public class AVLTreeNode<Value>
 {
     public String key;
@@ -11,6 +17,12 @@ public class AVLTreeNode<Value>
     public AVLTreeNode<Value> left;
     public AVLTreeNode<Value> right;
 
+    /**
+     * Creates a new node instance.
+     * 
+     * @param key Unique key for this instance.
+     * @param value Value to be added to this instance.
+     */
     public AVLTreeNode(String key, Value value)
     {
         this.key = key;
@@ -18,6 +30,7 @@ public class AVLTreeNode<Value>
         values.add(value);
     }
 
+    @Override
     public String toString()
     {
         String parent;

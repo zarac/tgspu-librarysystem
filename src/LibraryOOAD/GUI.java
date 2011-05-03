@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 /**
+ * A GUI.
  *
  * @author Spellabbet
  */
@@ -43,10 +44,10 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     private JLabel lLogIn = new JLabel("Please log in", (int) CENTER_ALIGNMENT);
     private JFrame fLogIn = new JFrame();
     private JButton bLogIn = new JButton("Log in");
-    private JTextField name = new JTextField("admin");
+    //private JTextField name = new JTextField("admin");
     //private JTextField persNr = new JTextField("admin");
-    private JPasswordField persNr = new JPasswordField("admin");
-    //private JTextField name = new JTextField("Your name");
+    private JPasswordField persNr = new JPasswordField("password");
+    private JTextField name = new JTextField("Your name");
     //private JTextField persNr = new JTextField("Your Social Security Number");
     private Catalog catalog;
 
@@ -70,8 +71,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
     private ViewLoansPanel panelViewLoans;
     private NewLoan panelNewLoan = new NewLoan();
     private ReturnLoan panelReturnMedia = new ReturnLoan();
+
     protected WelcomePanel panelWelcome;
 
+    /**
+     * Creates a new instance of GUI.
+     *
+     * @param catalog The catalog to control.
+     */
     public GUI(Catalog catalog){
         this.catalog = catalog;
 
@@ -155,6 +162,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         setView(panelWelcome);
     }
 
+    /**
+     * Converts an array or chars to string.
+     *
+     * @param chars The array of characters to be converted.
+     * @return The results of the conversion.
+     */
     protected String charArrayToString(char[] chars)
     {
         String returnValue = "";
@@ -199,6 +212,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         }
     }
 
+    /**
+     * Sets the panel to be viewed.
+     *
+     * @param panel The panel to be viewed.
+     */
     public void setView(JPanel panel){
         view.removeAll();
 
@@ -211,13 +229,14 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         view.repaint();
     }
 
-    public void search(){
+    protected void search(){
         searchResultPanel.setText(catalog.search(searchInput.getText()));
         scroll.revalidate();
     }
 
     /**
      * {@inheritDoc}
+     * @param e
      * @see KeyListener#keyTyped(KeyEvent)
      */
     public void keyTyped(KeyEvent e)
@@ -226,6 +245,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
     /**
      * {@inheritDoc}
+     * @param e
      * @see KeyListener#keyPressed(KeyEvent)
      */
     public void keyPressed(KeyEvent e)
@@ -234,6 +254,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
     /**
      * {@inheritDoc}
+     * @param e
      * @see KeyListener#keyReleased(KeyEvent)
      */
     public void keyReleased(KeyEvent e)
@@ -241,6 +262,11 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         search();
     }
 
+    /**
+     * Select the button given and set all others to unselected.
+     *
+     * @param button The button to be selected.
+     */
     protected void setSelected(JButton button)
     {
         if (search == button)
@@ -264,6 +290,12 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
             selected(returnMedia, false);
     }
 
+    /**
+     * Sets the selection status of the button.
+     *
+     * @param button The botton to change status.
+     * @param select The status.
+     */
     protected void selected(JButton button, boolean select)
     {
         if (select)
@@ -286,7 +318,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
         protected int currentColor, initialColor;
         protected Color[] colors;
         protected Timer matrixEffect;
-
+        
         protected WelcomePanel()
         {
             setBackground(Color.BLACK);
@@ -386,6 +418,7 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
         /**
          * {@inheritDoc}
+         * @param e
          * @see ActionListener#actionPerformed(ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
@@ -396,11 +429,13 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 
     protected class ViewLoansPanel extends JPanel
     {
+
         public ViewLoansPanel(){
             
             setBackground(Color.BLACK);
             setForeground(Color.GREEN);
-            ArrayList<Media> loans = catalog.curUser.getLoans();
+            User user = catalog.getCurrentUser();
+            ArrayList<Media> loans = user.getLoans();
             int size = loans.size();
             setLayout(new GridLayout(size, 1));
             for(int i = 0; i<size; i++){

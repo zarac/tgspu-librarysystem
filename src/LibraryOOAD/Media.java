@@ -7,7 +7,8 @@ package LibraryOOAD;
 
 
 /**
- *
+ * General Media object.
+ * 
  * @author Spellabbet
  */
 public abstract class Media {
@@ -16,6 +17,11 @@ public abstract class Media {
     protected User loaner;
     protected String name;
 
+    /**
+     * Creates new instance of Media.
+     *
+     * @param id Unique for this Media object.
+     */
     public Media( String id ) {
         this.id = id;
         this.available = true;
@@ -23,6 +29,11 @@ public abstract class Media {
         name = "unnamed";
     }
 
+    /**
+     * Returns ID of Media object.
+     *
+     * @return The ID.
+     */
     public String getId() {
         return id;
     }
@@ -47,18 +58,38 @@ public abstract class Media {
         this.name = name;
     }
 
+    /**
+     * Gets the availability of this instance.
+     * 
+     * @return Available or not.
+     */
     public boolean getAvailability(){
         return this.available;
     }
 
+    /**
+     * Gets the the current loaner of this instance.
+     *
+     * @return The loaner.
+     */
     public User getUser(){
         return this.loaner;
     }
 
+    /**
+     * Sets the loaner of this instance.
+     *
+     * @param user The loaner.
+     */
     public void setUser(User user){
         this.loaner = user;
     }
 
+    /**
+     * Sets the availbility of this instance.
+     *
+     * @param avail The availability.
+     */
     public void setAvailability(boolean avail){
         if(avail){
             this.available = true;
@@ -67,7 +98,11 @@ public abstract class Media {
         }
     }
 
-    public boolean equals( Object obj ) {
+    /**
+     * {@inheritDoc}
+     * @see Object#equals()
+     */
+    @Override public boolean equals( Object obj ) {
         Media media = (Media)obj;
         return id.equals( media.getId() );
     }
@@ -79,9 +114,5 @@ public abstract class Media {
     public String toString()
     {
         return "ID='" + id + "', name='" + name + "'";
-    }
-
-    public void removeLoanfromUser(){
-        loaner.removeLoan(this);
     }
 }

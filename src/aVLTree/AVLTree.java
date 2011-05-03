@@ -2,6 +2,12 @@ package aVLTree;
 
 import java.util.LinkedList;
 
+/**
+ * The AVLTree data structure.
+ *
+ * @author Spellabbet
+ * @param <Value>
+ */
 public class AVLTree<Value>
 {
     int size;
@@ -9,10 +15,16 @@ public class AVLTree<Value>
     AVLTreeNode<Value> root;
 
     // TODO : ? move to node class or create iterator class
+    /**
+     * A pointer used for iteration.
+     *
+     */
     public AVLTreeNode<Value> pointer;
 
     /**
      * {@inheritDoc}
+     * @param key
+     * @param value 
      * @see Dictionary#add(String,Value)
      */
     public void add(String key, Value value)
@@ -93,6 +105,8 @@ public class AVLTree<Value>
 
     /**
      * {@inheritDoc}
+     * @param key 
+     * @return
      * @see Dictionary#remove(String)
      */
     public LinkedList<Value> remove(String key)
@@ -107,6 +121,8 @@ public class AVLTree<Value>
 
     /**
      * {@inheritDoc}
+     * @param key 
+     * @return
      * @see Dictionary#remove(String)
      */
     protected AVLTreeNode<Value> removeNode(String key)
@@ -224,6 +240,7 @@ public class AVLTree<Value>
         return node;
     }
 
+
     protected AVLTreeNode<Value> getRightMost(AVLTreeNode<Value> node)
     {
         AVLTreeNode<Value> rightMost = node;
@@ -233,10 +250,12 @@ public class AVLTree<Value>
         return rightMost;
     }
 
+
     protected int getHeight(AVLTreeNode<Value> node)
     {
         return node == null ? 0 : node.height;
     }
+
 
     protected void fixHeight(AVLTreeNode<Value> node)
     {
@@ -265,6 +284,8 @@ public class AVLTree<Value>
 
     /**
      * {@inheritDoc}
+     * @param key
+     * @return
      * @see Dictionary#find(String)
      */
     public LinkedList<Value> find(String key)
@@ -280,6 +301,7 @@ public class AVLTree<Value>
 
     /**
      * {@inheritDoc}
+     * @return
      * @see Dictionary#size()
      */
     public int size()
@@ -316,6 +338,8 @@ public class AVLTree<Value>
      * Get next item, in-order. Can return null if empty tree or lonely node.
      *
      * {@inheritDoc}
+     * @param currentNode
+     * @return
      * @see Dictionary#getNext()
      */
     protected AVLTreeNode<Value> getNext(AVLTreeNode<Value> currentNode)
@@ -327,6 +351,9 @@ public class AVLTree<Value>
      * Get next item, in-order. Can return null if empty tree or lonely node.
      *
      * {@inheritDoc}
+     * @param root 
+     * @param currentNode
+     * @return
      * @see Dictionary#getNext()
      */
     protected AVLTreeNode<Value> getNext(AVLTreeNode<Value> root, AVLTreeNode<Value> currentNode)
